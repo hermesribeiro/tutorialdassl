@@ -43,6 +43,8 @@ Program main
     RPAR(2)=KV
     RPAR(3)=FI
     !ABRINDO ARQUIVOS PARA GRAVAÇÃO DE DADOS
+    !path.txt
+    !OPEN(8,FILE=trim(path)//'SAIDA.TXT')
     OPEN(8,FILE='../arquivos_fonte/Example1src/SAIDA.TXT')
     WRITE(8,*) 'TEMPO   H     FO'
     WRITE(*,*) 'TEMPO   H     FO'

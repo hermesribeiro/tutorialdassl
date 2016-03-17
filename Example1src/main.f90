@@ -45,7 +45,7 @@ Program main
     !ABRINDO ARQUIVOS PARA GRAVAÇÃO DE DADOS
     !path.txt
     !OPEN(8,FILE=trim(path)//'SAIDA.TXT')
-    OPEN(8,FILE='../arquivos_fonte/Example1src/SAIDA.TXT')
+    OPEN(8,FILE='Example1src/SAIDA.TXT')
     WRITE(8,*) 'TEMPO   H     FO'
     WRITE(*,*) 'TEMPO   H     FO'
     WRITE(8,"(F6.3,F6.3,F6.3)") T,Y !ESCREVE NO ARQUIVO DE SAÍDA O TEMPO, A ALTURA E A VAZÃO DE SAÍDA
