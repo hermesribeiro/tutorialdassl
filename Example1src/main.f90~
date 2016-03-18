@@ -8,6 +8,9 @@ Program main
     DOUBLE PRECISION H, FO, ST, KV, FI
     DOUBLE PRECISION HPRIME,FOPRIME
     DOUBLE PRECISION DT, TEND
+    !VARIÁVEIS AUXILIARES DO PROGRAMA
+    character( len = 99 ) :: path
+    INTEGER :: pathFnum, saidaFnum
     !FORMULAÇÃO DO PROBLEMA
     
     !ATRIBUINDO VALORES ÀS CONSTANTES
@@ -17,11 +20,13 @@ Program main
     !DEFININDO A CONDIÇÃO DE CONTORNO
     FI=1.D0        !VAZÃO DE ENTRADA
     
-    !DEFININDO CONDIÇÕES INICIAIS
+    !DEFININDO CONDIÇÕES INICIAIS DO PROCESSO
     H =0.D0        !ALTURA DE LÍQUIDO NO TANQUE
-    HPRIME=FI/ST   !DERIVADA DE H EM RELAÇÃO AO TEMPO
     FO=0.D0        !VAZÃO DE SAÍDA
-    FOPRIME=0.D0   !DERIVADA DE F0 EM RELAÇÃO AO TEMPO
+    
+    !DEFININDO ESTIMATIVAS INICIAIS PARA O MÉTODO NUMÉRICO
+    HPRIME=FI/ST   !DERIVADA DE H EM RELAÇÃO AO TEMPO
+    FOPRIME=KV*FI/ST   !DERIVADA DE F0 EM RELAÇÃO AO TEMPO
     
     !INICIANDO OS PARÂMETROS DA DASSL
     T=0.D0         !TEMPO ATUAL (TEMPO INICIAL NESSE CASO)
@@ -42,20 +47,27 @@ Program main
     RPAR(1)=ST
     RPAR(2)=KV
     RPAR(3)=FI
+    
+    !O PROGRAMA PRECISA DETECTAR O CAMINHO RELATIVO DESEJADO PARA ESCREVER O ARQUIVO DE SAÍDA
+    open( newunit = pathFnum, file = 'PUT "path.txt" HERE', action = 'write', status = 'replace')
+    close( pathFnum )
+    open( newunit = pathFnum, file = 'path.txt', action = 'read', status = 'old')
+    read( pathFnum, * ) path
+    close( pathFnum )
+    
     !ABRINDO ARQUIVOS PARA GRAVAÇÃO DE DADOS
-    !path.txt
-    !OPEN(8,FILE=trim(path)//'SAIDA.TXT')
-    OPEN(8,FILE='../arquivos_fonte/Example1src/SAIDA.TXT')
-    WRITE(8,*) 'TEMPO   H     FO'
-    WRITE(*,*) 'TEMPO   H     FO'
-    WRITE(8,"(F6.3,F6.3,F6.3)") T,Y !ESCREVE NO ARQUIVO DE SAÍDA O TEMPO, A ALTURA E A VAZÃO DE SAÍDA
-    WRITE(*,"(F6.3,F6.3,F6.3)") T,Y 
+    open( newunit = saidaFnum , file = trim(path)//'SAIDA.TXT', action = 'write', status = 'replace')
+    WRITE(saidaFnum,*) 'TEMPO   H     FO   dHdt     dFOdt'
+    WRITE(*,*)         'TEMPO   H     FO   dHdt     dFOdt'
+    WRITE(saidaFnum,"(5(F6.3, 1x))") T,Y(:) !ESCREVE NO ARQUIVO DE SAÍDA O TEMPO, A ALTURA E A VAZÃO DE SAÍDA
+    WRITE(*,"(5(F6.3, 1x))") T,Y(:)
     
     !ROTINA DE CHAMADA DA DASSL PARA INTEGRAÇÃO DO SISTEMA DE DAEs, EM PASSOS DE TEMPO DT, ATÉ O TEMPO FINAL TEND
     DO WHILE (T < TEND)
     CALL DDASSL (RES, NEQ, T, Y, YPRIME, TOUT, INFO, RTOL, ATOL, IDID, RWORK, LRW, IWORK, LIW, RPAR, IPAR, JAC) !INTEGRA O O SISTEMA
     TOUT=T+DT
-    WRITE(8,"(F6.3,F6.3,F6.3)") T,Y
-    WRITE(*,"(F6.3,F6.3,F6.3)") T,Y 
+    WRITE(saidaFnum,"(5(F6.3, 1x))") T,Y(:), YPRIME(:)
+    WRITE(*,"(5(F6.3, 1x))") T,Y(:), YPRIME(:)
     ENDDO
+    close(saidaFnum)
 end program
