@@ -2,7 +2,7 @@
 Neste tutorial você aprenderá a usar a rotina de solução de sistemas de equações algébrico diferenciais (DAEs) DASSL.
 
 #Modo de usar o tutorial
-1 - Baixe o repositório presente no github.com/hermesribeiro/tutorialdassl sera baixado com o nome(tutorialdassl-master.zip)
+1 - Baixe o repositório presente em [github.com/hermesribeiro/tutorialdassl] sera baixado com o nome (tutorialdassl-master.zip)
 3 - Descompacte o arquivo
 4 - Leia o arquivo "presentation/Apresentação DASSL Atoms How.odp"
 5 - Instale um compilador fortran de sua preferência
