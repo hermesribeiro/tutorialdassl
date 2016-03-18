@@ -2,19 +2,15 @@
 Neste tutorial você aprenderá a usar a rotina de solução de sistemas de equações algébrico diferenciais (DAEs) DASSL.
 
 #Modo de usar o tutorial
-1 - Baixe o repositório presente no github.com/hermesribeiro/tutorialdassl sera baixado com o nome(tutorialdassl-master.zip)
-3 - Descompacte o arquivo
-4 - Leia o arquivo "presentation/Apresentação DASSL Atoms How.odp"
-5 - Instale um compilador fortran de sua preferência
+1 - Baixe o repositório presente no github.com/hermesribeiro/tutorialdassl
+2 - Leia o arquivo "presentation/Apresentação DASSL Atoms How.odp"
+3 - Instale um compilador fortran de sua preferência
 
-##Utilizando o Netbeans + gfortran
-1 - Abra o Netbeans
-2 - Vá em File->New Project
-3 - Na caixa Categories selecione C/C++
-4 - Na caixa Projects selecione C/C++ Application e clique Next>
-5 - Designe um nome e uma localização para seu projeto e clique Finish
-6 - Na aba "Projects", clique com botão direito em "Source Files" e botão esquerdo em "Add Existing Item..."
-7 - Adicione os arquivos da pasta 
+##Utilizando o Netbeans
+1 - Crie um novo projeto em fortran
+2 - Adicione os arquivos da pasta "DASSLsrc" e "Example1src" ao projeto
+3 - Comente as linnhas xx-xx
+4 - remova os comentários nas linhas 
 
 ##Utilizando terminal Linux 
 TBA
