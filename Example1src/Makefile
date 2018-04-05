@@ -10,7 +10,7 @@
 # -fmax-errors=1: Limits the maximum number of error messages to n, at which point GNU Fortran bails out rather than attempting to continue processing the source code.
 # -ffree-line-length-none: Set column after which characters are ignored in typical free-form lines in the source file. The default value is 132. n may be none, meaning that the entire line is meaningful.
 # -O3: These options control various sorts of optimizations. Without any optimization option, the compiler's goal is to reduce the cost of compilation and to make debugging produce the expected results. Statements are independent: if you stop the program with a breakpoint between statements, you can then assign a new value to any variable or change the program counter to any other statement in the function and get exactly the results you expect from the source code. Turning on optimization flags makes the compiler attempt to improve the performance and/or code size at the expense of compilation time and possibly the ability to debug the program. The compiler performs optimization based on the knowledge it has of the program. Compiling multiple files at once to a single output file mode allows the compiler to use information gained from all of the files when compiling each of them. Not all optimizations are controlled directly by a flag. Only optimizations that have a flag are listed in this section. Most optimizations are only enabled if an -O level is set on the command line. Otherwise they are disabled, even if individual optimization flags are specified. Depending on the target and how GCC was configured, a slightly different set of optimizations may be enabled at each -O level than those listed here. You can invoke GCC with -Q --help=optimizers to find out the exact set of optimizations that are enabled at each level.
-F90_BASIC_OPTIONS = -g -Wall -fmax-errors=1 -ffree-line-length-none
+F90_BASIC_OPTIONS = -g -Wall -fcheck=all -fmax-errors=1 -ffree-line-length-none
 F90_DEBUG_OPTIONS = -fcheck=all
 F90_RELEASE_OPTIONS = -O3
 
@@ -23,28 +23,28 @@ LINKER = gfortran
 
 .PHONNY: RUN
 
-TodosObjetosCompilados = ObjetosCompilados/daux.o ObjetosCompilados/ddassl.o ObjetosCompilados/dlinpk.o ObjetosCompilados/res.o ObjetosCompilados/jac.o ObjetosCompilados/main.o
+ObjetosCompilados = ObjetosCompilados/daux.o ObjetosCompilados/ddassl.o ObjetosCompilados/dlinpk.o ObjetosCompilados/res.o ObjetosCompilados/jac.o ObjetosCompilados/program.o
 
-ObjetosCompilados/daux.o: DASSLsrc/daux.f
-	$(COMPILER) $(FOR_BASIC_OPTIONS) -JObjetosCompilados/ -c DASSLsrc/daux.f -o ObjetosCompilados/daux.o
+ObjetosCompilados/daux.o: ../DASSLsrc/daux.f
+	$(COMPILER) $(DASSLOPTIONS) -JObjetosCompilados/ -c ../DASSLsrc/daux.f -o ObjetosCompilados/daux.o
 	
-ObjetosCompilados/ddassl.o: DASSLsrc/ddassl.f dlinpk.o daux.o jac.o res.o
-	$(COMPILER) $(FOR_BASIC_OPTIONS) -JObjetosCompilados/ -c DASSLsrc/ddassl.f -o ObjetosCompilados/ddassl.o
+ObjetosCompilados/ddassl.o: ../DASSLsrc/ddassl.f ObjetosCompilados/dlinpk.o ObjetosCompilados/daux.o ObjetosCompilados/jac.o ObjetosCompilados/res.o
+	$(COMPILER) $(DASSLOPTIONS) -JObjetosCompilados/ -c ../DASSLsrc/ddassl.f -o ObjetosCompilados/ddassl.o
 	
-ObjetosCompilados/dlinpk.o: DASSLsrc/dlinpk.f
-	$(COMPILER) $(FOR_BASIC_OPTIONS) -JObjetosCompilados/ -c DASSLsrc/dlinpk.f -o ObjetosCompilados/dlinpk.o
+ObjetosCompilados/dlinpk.o: ../DASSLsrc/dlinpk.f
+	$(COMPILER) $(DASSLOPTIONS) -JObjetosCompilados/ -c ../DASSLsrc/dlinpk.f -o ObjetosCompilados/dlinpk.o
 	
-ObjetosCompilados/jac.o: Example1src/jac.f90
-	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c Example1src/jac.f90 -o ObjetosCompilados/jac.o
+ObjetosCompilados/jac.o: jac.f90
+	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c jac.f90 -o ObjetosCompilados/jac.o
 	
-ObjetosCompilados/res.o: Example1src/res.f90
-	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c Example1src/res.f90 -o ObjetosCompilados/res.o
+ObjetosCompilados/res.o: res.f90
+	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c res.f90 -o ObjetosCompilados/res.o
 	
-ObjetosCompilados/main.o: Example1src/main.f90
-	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c Example1src/main.f90 -o ObjetosCompilados/main.o
+ObjetosCompilados/program.o: program.f90
+	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c program.f90 -o ObjetosCompilados/program.o
 	
-ObjetosCompilados/main.elf: Example1src/main.f90 main.o ddassl.o
-	$(LINKER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ $(TodosObjetosCompilados) -o ObjetosCompilados/main.elf
-	
-RUN: ObjetosCompilados/main.elf
-	ObjetosCompilados/main.elf
+ObjetosCompilados/program.elf: ObjetosCompilados/program.o ObjetosCompilados/ddassl.o
+	$(LINKER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ $(ObjetosCompilados) -o ObjetosCompilados/program.elf
+
+RUN: ObjetosCompilados/program.elf
+	./ObjetosCompilados/program.elf

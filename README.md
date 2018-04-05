@@ -52,14 +52,8 @@ Uma IDE específica poderá utilizar um diretório diferente
 ##presentation/
 Aqui fica a apresentação de slides utilizada no curso
 
-##path.txt
-Arquivo para ficar no diretório base em que se dá a exeução do programa, contendo o caminho relativo desse diretório até o diretório em que se deseja registrar o arquivo SAIDA.txt
-recomenda-se que esse diretório final seja o diretório Example1src/, em que fica a planilha SAIDA.ods linkada ao arquivo de texto SAIDA.txt
-escrever o caminho relativo entre aspas simples e terminando em "/".
-e.g. 'Example1src/'
-
-##PUT "path.txt" HERE
-Este arquivo é criado automaticamente pelo programa, para mostrar onde o arquivo path.txt deve ficar localizado, em caso de dúvida pelo usuário deste material
+##PLACE INPUT-OUTPUT FILES HERE
+Este arquivo é criado automaticamente pelo programa, para mostrar onde os arquivos input devem ficar localizados, em caso de erro de leitura.
 
 ##Makefile
 Temos um arquivo Makefile - um script para chamar o compilador (compiler), e montadores (linkers) para gerar o seu executável
