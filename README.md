@@ -20,7 +20,11 @@ Neste tutorial você aprenderá a usar a rotina de solução de sistemas de equa
 10. Compille e execute o programa em Run->Run Project
 
 ### Utilizando terminal Linux 
-TBA
+1. leve o terminal até a pasta do exemplo "Example1src/"
+>- (comando `cd` ou equivalente)
+2. entre o comando `make` para executar o script Makefile
+>- (necessário instalar `make`, `gfortran`, `build-essentials`;
+>- comando `apt get install` ou equivalente)
 
 # Pré requesitos
 - Noções de programação
