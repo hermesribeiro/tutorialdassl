@@ -23,28 +23,28 @@ LINKER = gfortran
 
 .PHONNY: RUN
 
-TodosObjetosCompilados = ObjetosCompilados/daux.o ObjetosCompilados/ddassl.o ObjetosCompilados/dlinpk.o ObjetosCompilados/res.o ObjetosCompilados/jac.o ObjetosCompilados/main.o
+ObjetosCompilados = ObjetosCompilados/daux.o ObjetosCompilados/ddassl.o ObjetosCompilados/dlinpk.o ObjetosCompilados/res.o ObjetosCompilados/jac.o ObjetosCompilados/program.o
 
-ObjetosCompilados/daux.o: DASSLsrc/daux.f
-	$(COMPILER) $(FOR_BASIC_OPTIONS) -JObjetosCompilados/ -c DASSLsrc/daux.f -o ObjetosCompilados/daux.o
+ObjetosCompilados/daux.o: ../DASSLsrc/daux.f
+	$(COMPILER) $(DASSLOPTIONS) -JObjetosCompilados/ -c ../DASSLsrc/daux.f -o ObjetosCompilados/daux.o
 	
-ObjetosCompilados/ddassl.o: DASSLsrc/ddassl.f dlinpk.o daux.o jac.o res.o
-	$(COMPILER) $(FOR_BASIC_OPTIONS) -JObjetosCompilados/ -c DASSLsrc/ddassl.f -o ObjetosCompilados/ddassl.o
+ObjetosCompilados/ddassl.o: ../DASSLsrc/ddassl.f ObjetosCompilados/dlinpk.o ObjetosCompilados/daux.o ObjetosCompilados/jac.o ObjetosCompilados/res.o
+	$(COMPILER) $(DASSLOPTIONS) -JObjetosCompilados/ -c ../DASSLsrc/ddassl.f -o ObjetosCompilados/ddassl.o
 	
-ObjetosCompilados/dlinpk.o: DASSLsrc/dlinpk.f
-	$(COMPILER) $(FOR_BASIC_OPTIONS) -JObjetosCompilados/ -c DASSLsrc/dlinpk.f -o ObjetosCompilados/dlinpk.o
+ObjetosCompilados/dlinpk.o: ../DASSLsrc/dlinpk.f
+	$(COMPILER) $(DASSLOPTIONS) -JObjetosCompilados/ -c ../DASSLsrc/dlinpk.f -o ObjetosCompilados/dlinpk.o
 	
-ObjetosCompilados/jac.o: Example1src/jac.f90
-	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c Example1src/jac.f90 -o ObjetosCompilados/jac.o
+ObjetosCompilados/jac.o: jac.f90
+	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c jac.f90 -o ObjetosCompilados/jac.o
 	
-ObjetosCompilados/res.o: Example1src/res.f90
-	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c Example1src/res.f90 -o ObjetosCompilados/res.o
+ObjetosCompilados/res.o: res.f90
+	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c res.f90 -o ObjetosCompilados/res.o
 	
-ObjetosCompilados/main.o: Example1src/main.f90
-	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c Example1src/main.f90 -o ObjetosCompilados/main.o
+ObjetosCompilados/program.o: program.f90
+	$(COMPILER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ -c program.f90 -o ObjetosCompilados/program.o
 	
-ObjetosCompilados/main.elf: Example1src/main.f90 main.o ddassl.o
-	$(LINKER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ $(TodosObjetosCompilados) -o ObjetosCompilados/main.elf
-	
-RUN: ObjetosCompilados/main.elf
-	ObjetosCompilados/main.elf
+ObjetosCompilados/program.elf: ObjetosCompilados/program.o ObjetosCompilados/ddassl.o
+	$(LINKER) $(F90_BASIC_OPTIONS) $(F90_DEBUG_OPTIONS) -JObjetosCompilados/ $(ObjetosCompilados) -o ObjetosCompilados/program.elf
+
+RUN: ObjetosCompilados/program.elf
+	./ObjetosCompilados/program.elf
